@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.UUID;
@@ -34,8 +33,7 @@ public class AccountRestController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountView> create(@Valid @RequestBody CreateAccountCommand command) {
         AccountView account = service.createAccount(command);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(account.id()).toUri();
+        URI location = URI.create("/api/accounts/" + account.id());
         return ResponseEntity.created(location).body(account);
     }
 

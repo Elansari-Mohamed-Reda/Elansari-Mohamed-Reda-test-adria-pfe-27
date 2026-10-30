@@ -1,11 +1,31 @@
 server:
   address: 127.0.0.1
   port: 8080
-
 spring:
   application:
     name: gateway-service
-
+  config:
+    import: configserver:${CONFIG_SERVER_URL:http://127.0.0.1:8888}
+  cloud:
+    config:
+      enabled: true
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 10s
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    ip-address: ${SERVICE_IP:127.0.0.1}
+    instance-id: ${spring.application.name}:${server.port}
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
 management:
   endpoints:
     web:

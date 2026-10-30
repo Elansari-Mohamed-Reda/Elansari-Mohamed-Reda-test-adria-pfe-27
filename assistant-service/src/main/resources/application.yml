@@ -3,6 +3,8 @@ server:
   port: 8083
 
 spring:
+  profiles:
+    default: standalone
   application:
     name: assistant-service
 

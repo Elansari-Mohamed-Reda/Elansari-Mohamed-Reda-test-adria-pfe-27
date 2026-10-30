@@ -3,6 +3,8 @@ server:
   port: 8082
 
 spring:
+  profiles:
+    default: standalone
   ai:
     mcp:
       server:

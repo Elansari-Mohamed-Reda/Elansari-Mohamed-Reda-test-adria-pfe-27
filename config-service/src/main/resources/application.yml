@@ -1,11 +1,16 @@
 server:
   address: 127.0.0.1
   port: 8888
-
 spring:
   application:
     name: config-service
-
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: ${CONFIG_REPO_LOCATION:classpath:/config-repo/}
 management:
   endpoints:
     web:

@@ -1,11 +1,17 @@
 server:
   address: 127.0.0.1
   port: 8761
-
 spring:
   application:
     name: discovery-service
-
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    wait-time-in-ms-when-sync-empty: 0
 management:
   endpoints:
     web:

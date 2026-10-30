@@ -1,0 +1,20 @@
+spring:
+  config:
+    import: configserver:${CONFIG_SERVER_URL:http://127.0.0.1:8888}
+  cloud:
+    config:
+      enabled: true
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    ip-address: ${SERVICE_IP:127.0.0.1}
+    instance-id: ${spring.application.name}:${server.port}
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+bank:
+  account-service:
+    url: ${ACCOUNT_SERVICE_URL:}
