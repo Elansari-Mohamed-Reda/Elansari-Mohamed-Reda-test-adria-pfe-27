@@ -3,6 +3,13 @@ server:
   port: 8081
 
 spring:
+  ai:
+    mcp:
+      server:
+        name: account-service
+        version: 1.0.0
+        type: SYNC
+        protocol: STATELESS
   application:
     name: account-service
   datasource:
