@@ -5,6 +5,16 @@ server:
 spring:
   application:
     name: transaction-service
+  datasource:
+    url: "${TRANSACTION_DB_URL:jdbc:h2:file:./data/transaction-service;DB_CLOSE_ON_EXIT=FALSE}"
+    username: ${TRANSACTION_DB_USERNAME:sa}
+    password: ${TRANSACTION_DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
 
 management:
   endpoints:
