@@ -1,0 +1,28 @@
+type Query {
+  account(id: ID!): Account!
+  accounts(page: Int = 0, size: Int = 20): AccountPage!
+}
+type Mutation {
+  createAccount(input: CreateAccountInput!): Account!
+  changeAccountStatus(id: ID!, status: AccountStatus!): Account!
+}
+enum AccountStatus { ACTIVE BLOCKED }
+type Account {
+  id: ID!
+  customerReference: String!
+  status: AccountStatus!
+  currency: String!
+  balance: String!
+}
+type AccountPage {
+  content: [Account!]!
+  page: Int!
+  size: Int!
+  totalElements: String!
+  totalPages: Int!
+}
+input CreateAccountInput {
+  customerReference: String!
+  currency: String!
+  balance: String!
+}
