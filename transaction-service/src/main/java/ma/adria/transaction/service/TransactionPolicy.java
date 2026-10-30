@@ -18,11 +18,14 @@ public class TransactionPolicy {
         this.maxAmount=maxAmount;
         this.validator=validator;
     }
-    public void validate(CreateTransactionCommand command, AccountSnapshot account) {
+    public void validateCommand(CreateTransactionCommand command) {
         if (command==null) throw new TransactionRejectedException("Transaction obligatoire.");
         var violations=validator.validate(command);
         if (!violations.isEmpty()) throw new ConstraintViolationException(violations);
         if (command.amount().compareTo(maxAmount)>0) reject("Plafond depasse.");
+    }
+    public void validate(CreateTransactionCommand command, AccountSnapshot account) {
+        validateCommand(command);
         if (account==null || !command.accountId().equals(account.id())) reject("Compte introuvable ou reference incoherente.");
         if (!"ACTIVE".equals(account.status())) reject("Le compte doit etre actif.");
         if (!command.currency().equals(account.currency())) reject("Devises incompatibles.");

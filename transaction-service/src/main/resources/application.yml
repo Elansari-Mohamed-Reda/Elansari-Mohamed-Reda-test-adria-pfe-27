@@ -3,6 +3,17 @@ server:
   port: 8082
 
 spring:
+  cloud:
+    circuitbreaker:
+      resilience4j:
+        disable-time-limiter: true
+        enableSemaphoreDefaultBulkhead: false
+    openfeign:
+      client:
+        config:
+          account-service:
+            connectTimeout: 1000
+            readTimeout: 2000
   application:
     name: transaction-service
   datasource:
@@ -27,5 +38,19 @@ management:
         enabled: true
 
 bank:
+  account-service:
+    url: ${ACCOUNT_SERVICE_URL:http://127.0.0.1:8081}
   transaction:
     max-amount: ${BANK_TRANSACTION_MAX_AMOUNT:1000}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      accountService:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        ignoreExceptions:
+          - ma.adria.transaction.service.exception.TransactionRejectedException
