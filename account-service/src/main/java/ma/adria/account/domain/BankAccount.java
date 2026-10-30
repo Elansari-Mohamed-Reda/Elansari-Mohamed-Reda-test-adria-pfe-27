@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -61,6 +62,10 @@ public class BankAccount {
         this.currency = currency;
         this.balance = balance;
         this.status = AccountStatus.ACTIVE;
+    }
+
+    public void changeStatus(AccountStatus status) {
+        this.status = Objects.requireNonNull(status, "Le statut est obligatoire.");
     }
 
     public UUID getId() {
