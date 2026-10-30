@@ -35,3 +35,8 @@ venv/
 # Systeme
 .DS_Store
 Thumbs.db
+
+# Bases de donnees locales
+**/data/
+*.mv.db
+*.trace.db

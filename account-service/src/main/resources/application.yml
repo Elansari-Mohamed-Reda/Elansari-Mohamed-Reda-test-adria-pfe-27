@@ -5,6 +5,16 @@ server:
 spring:
   application:
     name: account-service
+  datasource:
+    url: "${ACCOUNT_DB_URL:jdbc:h2:file:./data/account-service;DB_CLOSE_ON_EXIT=FALSE}"
+    username: ${ACCOUNT_DB_USERNAME:sa}
+    password: ${ACCOUNT_DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
 
 management:
   endpoints:
