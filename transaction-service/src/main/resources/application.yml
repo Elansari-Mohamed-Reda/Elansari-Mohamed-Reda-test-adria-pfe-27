@@ -25,3 +25,7 @@ management:
     health:
       probes:
         enabled: true
+
+bank:
+  transaction:
+    max-amount: ${BANK_TRANSACTION_MAX_AMOUNT:1000}
