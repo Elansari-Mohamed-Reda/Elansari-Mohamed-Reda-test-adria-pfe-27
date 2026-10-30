@@ -7,4 +7,8 @@ import org.springframework.web.bind.annotation.*;
 public interface AccountClient {
     @GetMapping("/api/accounts/{accountId}")
     AccountSnapshot getAccount(@PathVariable("accountId") UUID accountId);
+    @GetMapping("/internal/movements/{id}")
+    MovementReceipt findMovement(@PathVariable("id") UUID id);
+    @PostMapping("/internal/movements")
+    MovementReceipt applyMovement(@RequestBody MovementRequest command);
 }

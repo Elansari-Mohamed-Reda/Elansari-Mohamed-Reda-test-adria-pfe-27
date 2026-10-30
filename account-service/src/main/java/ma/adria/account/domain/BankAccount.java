@@ -68,6 +68,14 @@ public class BankAccount {
         this.status = Objects.requireNonNull(status, "Le statut est obligatoire.");
     }
 
+    public void debit(BigDecimal amount) {
+        if(amount==null || amount.signum()<=0 || balance.compareTo(amount)<0) throw new IllegalArgumentException("Debit invalide.");
+        balance=balance.subtract(amount);
+    }
+    public void credit(BigDecimal amount) {
+        if(amount==null || amount.signum()<=0) throw new IllegalArgumentException("Credit invalide.");
+        balance=balance.add(amount);
+    }
     public UUID getId() {
         return id;
     }

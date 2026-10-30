@@ -3,6 +3,13 @@ server:
   port: 8082
 
 spring:
+  ai:
+    mcp:
+      server:
+        name: transaction-service
+        version: 1.0.0
+        type: SYNC
+        protocol: STATELESS
   cloud:
     circuitbreaker:
       resilience4j:
@@ -17,7 +24,7 @@ spring:
   application:
     name: transaction-service
   datasource:
-    url: "${TRANSACTION_DB_URL:jdbc:h2:file:./data/transaction-service;DB_CLOSE_ON_EXIT=FALSE}"
+    url: "${TRANSACTION_DB_URL:jdbc:h2:file:./data/transaction-service;DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0}"
     username: ${TRANSACTION_DB_USERNAME:sa}
     password: ${TRANSACTION_DB_PASSWORD:}
   jpa:

@@ -23,6 +23,10 @@ import java.util.TreeMap;
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(ma.adria.account.service.exception.MovementConflictException.class)
+    public ProblemDetail movementConflict(RuntimeException exception) {
+        return problem(HttpStatus.CONFLICT,"Conflit d'identifiant",exception.getMessage());
+    }
     @ExceptionHandler(AccountNotFoundException.class)
     public ProblemDetail accountNotFound(AccountNotFoundException exception) {
         return problem(HttpStatus.NOT_FOUND, "Compte introuvable", exception.getMessage());

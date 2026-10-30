@@ -1,0 +1,11 @@
+ALTER TABLE bank_transactions ADD COLUMN request_id UUID;
+UPDATE bank_transactions SET request_id=id;
+ALTER TABLE bank_transactions ALTER COLUMN request_id SET NOT NULL;
+ALTER TABLE bank_transactions ADD CONSTRAINT uq_transaction_request UNIQUE(request_id);
+ALTER TABLE bank_transactions ADD COLUMN target_account_id UUID;
+ALTER TABLE bank_transactions ADD COLUMN status VARCHAR(16) DEFAULT 'COMPLETED' NOT NULL;
+ALTER TABLE bank_transactions ADD COLUMN failure_reason VARCHAR(300);
+ALTER TABLE bank_transactions ADD CONSTRAINT ck_transaction_status CHECK(status IN ('PENDING','COMPLETED','REJECTED'));
+CREATE TABLE bank_transaction_lock (id BIGINT PRIMARY KEY);
+INSERT INTO bank_transaction_lock(id) VALUES(1);
+CREATE INDEX idx_transaction_status ON bank_transactions(status);

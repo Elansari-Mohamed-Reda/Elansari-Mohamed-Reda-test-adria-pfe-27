@@ -29,4 +29,27 @@ public class AccountGateway {
             throw new AccountServiceUnavailableException(cause);
         });
     }
+
+    public java.util.Optional<MovementReceipt> findMovement(UUID id) {
+        return breakers.create("accountService").run(()->{
+            try { return java.util.Optional.of(client.findMovement(id)); }
+            catch(FeignException.NotFound missing) { return java.util.Optional.empty(); }
+        },failure->{ throw new AccountServiceUnavailableException(failure); });
+    }
+    public MovementReceipt applyMovement(MovementRequest command) {
+        return breakers.create("accountService").run(()->{
+            try { return client.applyMovement(command); }
+            catch(FeignException failure) {
+                if(failure.status()==400 || failure.status()==404 || failure.status()==422)
+                    throw new TransactionRejectedException("Mouvement refuse : compte, devise ou solde invalide.");
+                throw failure;
+            }
+        },failure->{
+            Throwable cause=failure;
+            while((cause instanceof java.util.concurrent.ExecutionException || cause instanceof java.util.concurrent.CompletionException)
+                    && cause.getCause()!=null)cause=cause.getCause();
+            if(cause instanceof TransactionRejectedException rejected)throw rejected;
+            throw new AccountServiceUnavailableException(cause);
+        });
+    }
 }

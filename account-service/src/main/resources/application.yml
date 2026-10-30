@@ -13,7 +13,7 @@ spring:
   application:
     name: account-service
   datasource:
-    url: "${ACCOUNT_DB_URL:jdbc:h2:file:./data/account-service;DB_CLOSE_ON_EXIT=FALSE}"
+    url: "${ACCOUNT_DB_URL:jdbc:h2:file:./data/account-service;DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0}"
     username: ${ACCOUNT_DB_USERNAME:sa}
     password: ${ACCOUNT_DB_PASSWORD:}
   jpa:

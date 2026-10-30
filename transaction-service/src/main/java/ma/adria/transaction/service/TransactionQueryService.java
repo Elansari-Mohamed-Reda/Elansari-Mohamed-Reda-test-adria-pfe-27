@@ -20,7 +20,7 @@ public class TransactionQueryService {
         return TransactionView.from(repository.findById(id).orElseThrow(()->new TransactionNotFoundException(id)));
     }
     public Page<TransactionView> getTransactions(@NotNull UUID accountId,@Min(0) int page,@Min(1) @Max(100) int size) {
-        return repository.findByAccountId(accountId,PageRequest.of(page,size,
+        return repository.findRelated(accountId,PageRequest.of(page,size,
                 Sort.by(Sort.Order.desc("createdAt"),Sort.Order.desc("id")))).map(TransactionView::from);
     }
 }

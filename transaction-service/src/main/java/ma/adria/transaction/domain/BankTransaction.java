@@ -42,6 +42,29 @@ public class BankTransaction {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Column(name="request_id",nullable=false,unique=true)
+    private UUID requestId=UUID.randomUUID();
+    @Column(name="target_account_id")
+    private UUID targetAccountId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable=false,length=16)
+    private TransactionStatus status=TransactionStatus.COMPLETED;
+    @Column(name="failure_reason",length=300)
+    private String failureReason;
+
+    public static BankTransaction pending(UUID requestId,UUID source,UUID target,BigDecimal amount,
+                                          String currency,String merchant,String country) {
+        var transaction=new BankTransaction(source,amount,currency,merchant,country);
+        transaction.requestId=requestId;transaction.targetAccountId=target;transaction.status=TransactionStatus.PENDING;
+        return transaction;
+    }
+    public void complete() { status=TransactionStatus.COMPLETED;failureReason=null; }
+    public void reject(String reason) { status=TransactionStatus.REJECTED;failureReason=reason.substring(0,Math.min(reason.length(),300)); }
+    public UUID getRequestId() { return requestId; }
+    public UUID getTargetAccountId() { return targetAccountId; }
+    public TransactionStatus getStatus() { return status; }
+    public String getFailureReason() { return failureReason; }
+
     protected BankTransaction() {}
 
     public BankTransaction(UUID accountId, BigDecimal amount, String currency,

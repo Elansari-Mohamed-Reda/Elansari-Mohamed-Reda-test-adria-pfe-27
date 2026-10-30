@@ -1,0 +1,38 @@
+type Query {
+ transaction(id: ID!): Transaction!
+ transactions(accountId: ID!, page: Int = 0, size: Int = 20): TransactionPage!
+}
+type Mutation {
+ createTransaction(input: SubmitTransactionInput!): Transaction!
+ retryTransaction(id: ID!): Transaction!
+}
+enum TransactionStatus { PENDING COMPLETED REJECTED }
+type Transaction {
+ id: ID!
+ requestId: ID!
+ accountId: ID!
+ targetAccountId: ID
+ amount: String!
+ currency: String!
+ merchantCategory: String!
+ country: String!
+ createdAt: String!
+ status: TransactionStatus!
+ failureReason: String
+}
+type TransactionPage {
+ content: [Transaction!]!
+ page: Int!
+ size: Int!
+ totalElements: String!
+ totalPages: Int!
+}
+input SubmitTransactionInput {
+ requestId: ID!
+ accountId: ID!
+ targetAccountId: ID
+ amount: String!
+ currency: String!
+ merchantCategory: String!
+ country: String!
+}
